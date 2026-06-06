@@ -6,8 +6,9 @@ use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\CategoryController;
 
 // ANA SAYFA YÖNLENDİRMESİ
+// Herkese açık Müşteri Vitrini (React)
 Route::get('/', function () {
-    return redirect()->route('login');
+    return view('welcome');
 });
 
 // LOGIN ROUTES
