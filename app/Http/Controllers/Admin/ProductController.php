@@ -81,24 +81,44 @@ class ProductController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+   public function edit($id)
     {
-        //
+        // Ürünü veritabanından bul
+        $product = Product::findOrFail($id);
+        
+        // Beyaz ekran yerine, ürünü düzenleme sayfasına gönderiyoruz
+        return view('admin.products.edit', compact('product'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $id)
     {
-        //
+        $product = \App\Models\Product::findOrFail($id);
+        
+        // Formdan gelen verilerle ürünü güncelle
+        $product->update([
+            'name' => $request->name,
+            'price' => $request->price,
+            'description' => $request->description,
+        ]);
+
+        return redirect()->route('admin.products.index')->with('success', 'Component updated successfully.');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+   public function destroy($id)
     {
-        //
+        // 1. Ürünü veritabanından bul
+        $product = \App\Models\Product::findOrFail($id);
+        
+        // 2. Ürünü sil (Eksik olan asıl komut buydu!)
+        $product->delete();
+        
+        // 3. Tabloya geri dön
+        return redirect()->route('admin.products.index')->with('success', 'Component deleted successfully.');
     }
 }

@@ -14,8 +14,7 @@
                 MOBILITY<span class="text-blue-500">.B2B</span>
             </div>
             <nav class="space-x-6">
-                <a href="#" class="hover:text-blue-400 transition-colors">Catalog</a>
-                <a href="#" class="hover:text-blue-400 transition-colors">About Us</a>
+                <a href="{{ route('about') }}">About</a>
                 <a href="/login" class="text-slate-300 hover:text-white">Admin Login</a>
             </nav>
         </div>

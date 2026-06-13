@@ -1,80 +1,66 @@
 @extends('layouts.admin')
 
-@section('header', 'OEM Parts Management')
+@section('title', 'Hardware Catalog')
 
 @section('content')
-<div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
-    <div class="flex justify-between items-center mb-6">
+    <div class="flex justify-between items-center mb-8">
         <div>
-            <h2 class="text-lg font-semibold text-slate-800">Product Catalog</h2>
-            <p class="text-sm text-slate-500">Manage all OEM parts, sensors, and hardware components.</p>
+            <h2 class="text-3xl font-black text-slate-900">Hardware Catalog</h2>
+            <p class="text-slate-500 mt-1">Manage your OEM components, sensors, and mobility parts.</p>
         </div>
-        <a href="{{ route('admin.products.create') }}" class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-lg text-sm font-medium transition-all shadow-lg shadow-blue-500/30">
-            + Add New Part
+        <a href="{{ route('admin.products.create') }}" class="bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 px-5 rounded-xl shadow-lg shadow-blue-500/30 transition-colors flex items-center gap-2">
+            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" /></svg>
+            Add New Component
         </a>
     </div>
 
-    @if($products->count() > 0)
+    <div class="bg-white rounded-3xl border border-slate-200 shadow-xl overflow-hidden">
         <div class="overflow-x-auto">
             <table class="w-full text-left border-collapse">
                 <thead>
-                    <tr class="bg-slate-50 text-slate-500 text-sm border-b border-slate-200">
-                        <th class="py-3 px-4 font-medium">Image</th>
-                        <th class="py-3 px-4 font-medium">Product Name</th>
-                        <th class="py-3 px-4 font-medium">Category</th>
-                        <th class="py-3 px-4 font-medium">Price</th>
-                        <th class="py-3 px-4 font-medium">Stock</th>
-                        <th class="py-3 px-4 font-medium">Status</th>
-                        <th class="py-3 px-4 font-medium text-right">Actions</th>
+                    <tr class="bg-slate-50 border-b border-slate-200 text-slate-500 text-sm uppercase tracking-wider">
+                        <th class="p-5 font-bold">ID</th>
+                        <th class="p-5 font-bold">Component Name</th>
+                        <th class="p-5 font-bold">Price</th>
+                        <th class="p-5 font-bold">Status</th>
+                        <th class="p-5 font-bold text-right">Actions</th>
                     </tr>
                 </thead>
-                <tbody class="text-sm">
-                    @foreach($products as $product)
-                    <tr class="border-b border-slate-100 hover:bg-slate-50 transition-colors">
-                        <td class="py-3 px-4">
-                            @if($product->image)
-                                <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}" class="w-12 h-12 object-cover rounded-lg border border-slate-200 shadow-sm">
-                            @else
-                                <div class="w-12 h-12 bg-slate-100 rounded-lg flex items-center justify-center text-slate-400 text-xs border border-slate-200">No Img</div>
-                            @endif
+                <tbody class="divide-y divide-slate-200">
+                    
+                    {{-- Veritabanındaki ürünleri listeleyen döngü --}}
+                    @forelse($products as $product)
+                    <tr class="hover:bg-slate-50 transition-colors">
+                        <td class="p-5 text-slate-500">#{{ $product->id }}</td>
+                        <td class="p-5">
+                            <div class="font-bold text-slate-900">{{ $product->name }}</div>
                         </td>
-                        <td class="py-3 px-4 font-medium text-slate-800">
-                            {{ $product->name }}
-                            <div class="text-xs text-slate-500 font-normal mt-0.5">OEM: {{ $product->oem_number ?? 'N/A' }}</div>
+                        <td class="p-5 text-slate-900 font-bold">${{ number_format($product->price, 2) }}</td>
+                        <td class="p-5">
+                            <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide">In Stock</span>
                         </td>
-                        <td class="py-3 px-4 text-slate-600">{{ $product->category->name ?? 'Uncategorized' }}</td>
-                        <td class="py-3 px-4 font-medium text-slate-800">${{ number_format($product->price, 2) }}</td>
-                        <td class="py-3 px-4">
-                            @if($product->stock_quantity > 10)
-                                <span class="text-green-600 font-medium">{{ $product->stock_quantity }} in stock</span>
-                            @elseif($product->stock_quantity > 0)
-                                <span class="text-orange-500 font-medium">{{ $product->stock_quantity }} low stock</span>
-                            @else
-                                <span class="text-red-500 font-medium">Out of stock</span>
-                            @endif
-                        </td>
-                        <td class="py-3 px-4">
-                            @if($product->is_active)
-                                <span class="px-2.5 py-1 bg-green-100 text-green-700 rounded-full text-xs font-medium">Active</span>
-                            @else
-                                <span class="px-2.5 py-1 bg-red-100 text-red-700 rounded-full text-xs font-medium">Inactive</span>
-                            @endif
-                        </td>
-                        <td class="py-3 px-4 text-right">
-                            <div class="flex justify-end items-center gap-3">
-                                <a href="#" class="text-blue-600 hover:text-blue-800 font-medium">Edit</a>
-                                <a href="#" class="text-red-600 hover:text-red-800 font-medium">Delete</a>
-                            </div>
+                        <td class="p-5 text-right space-x-3 flex justify-end">
+                            {{-- Düzenle (Edit) Butonu --}}
+                            <a href="{{ route('admin.products.edit', $product->id) }}" class="text-blue-500 hover:text-blue-700 font-medium text-sm transition-colors">Edit</a>
+                            
+                            {{-- Sil (Delete) Butonu --}}
+                            <form action="{{ route('admin.products.destroy', $product->id) }}" method="POST" class="inline-block">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="text-red-500 hover:text-red-700 font-medium text-sm transition-colors" onclick="return confirm('Silmek istediğine emin misin?')">
+                                    Delete
+                                </button>
+                            </form>
                         </td>
                     </tr>
-                    @endforeach
+                    @empty
+                    <tr>
+                        <td colspan="5" class="p-5 text-center text-slate-500">No components found. Add a new one to get started!</td>
+                    </tr>
+                    @endforelse
+
                 </tbody>
             </table>
         </div>
-    @else
-        <div class="text-center py-10 bg-slate-50 rounded-lg border border-dashed border-slate-300">
-            <p class="text-slate-500">No OEM parts found in the catalog.</p>
-        </div>
-    @endif
-</div>
+    </div>
 @endsection

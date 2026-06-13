@@ -21,10 +21,12 @@ class AuthController extends Controller
 
         $credentials = $request->only('email', 'password');
 
-        if (Auth::attempt($credentials, $request->filled('remember'))) {
-            $request->session()->regenerate();
-            return redirect()->intended(route('admin.index')); // Admin paneline yönlendir
-        }
+       if (Auth::attempt($credentials)) {
+         $request->session()->regenerate();
+    
+         // Yönlendirme hedefini güncelledik
+            return redirect()->route('admin.dashboard');
+}
 
         return back()->withErrors([
             'email' => 'Invalid email or password.',

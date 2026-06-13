@@ -3,38 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>B2B Mobility Partner Portal</title>
-    @vite(['resources/css/app.css', 'resources/js/app.jsx'])
+    <title>Login - Mobility B2B</title>
+    @vite(['resources/css/app.css'])
 </head>
-<body class="bg-slate-900 text-slate-200 antialiased h-screen flex items-center justify-center">
-    
-    <div class="max-w-4xl w-full flex rounded-2xl shadow-2xl overflow-hidden bg-slate-800 border border-slate-700">
+<body class="bg-slate-900 font-sans antialiased min-h-screen flex items-center justify-center p-6">
+
+    <div class="max-w-4xl w-full flex bg-slate-800/50 rounded-3xl shadow-2xl border border-slate-700 overflow-hidden">
         
-        <div class="w-1/2 p-12 bg-slate-800 flex flex-col justify-between hidden md:flex border-r border-slate-700">
-            <div>
-                <h1 class="text-3xl font-bold text-white tracking-wider">MOBILITY<span class="text-blue-500">.B2B</span></h1>
-                <p class="mt-4 text-slate-400 text-sm leading-relaxed">
-                    Advanced OEM Components & Supply Chain Platform. 
-                    Manage your automotive parts, track component history, and streamline your B2B orders globally.
-                </p>
-            </div>
-            <div class="text-xs text-slate-500">
-                &copy; {{ date('Y') }} Mobility Solutions Inc. <br> Secure Partner Access Only.
+        <div class="hidden md:flex flex-col w-1/2 p-12 border-r border-slate-700/50 justify-center">
+            <h1 class="text-3xl font-black text-white mb-4">MOBILITY<span class="text-blue-500">.B2B</span></h1>
+            <p class="text-slate-400 leading-relaxed text-sm">
+                Advanced OEM Components & Supply Chain Platform. Manage your automotive parts, track component history, and streamline your B2B orders globally.
+            </p>
+            <div class="mt-auto pt-8">
+                <p class="text-xs text-slate-500">&copy; 2026 Mobility Solutions Inc.<br>Secure Partner Access Only.</p>
             </div>
         </div>
 
-        <div class="w-full md:w-1/2 p-8 sm:p-12 bg-slate-900">
-            <h2 class="text-2xl font-semibold text-white mb-2">Partner Login</h2>
-            <p class="text-sm text-slate-400 mb-8">Please enter your credentials to access the portal.</p>
-
-            @if($errors->any())
-                <div class="bg-red-500/10 border border-red-500/50 text-red-400 p-3 rounded-lg text-sm mb-6">
-                    {{ $errors->first() }}
-                </div>
-            @endif
+        <div class="w-full md:w-1/2 p-12">
+            <h2 class="text-2xl font-bold text-white mb-2">Partner Login</h2>
+            <p class="text-slate-400 text-sm mb-8">Please enter your credentials to access the portal.</p>
 
             <form action="{{ route('login.post') }}" method="POST" class="space-y-6">
                 @csrf
+                
                 <div>
                     <label class="block text-sm font-medium text-slate-400 mb-1">Corporate Email</label>
                     <input type="email" name="email" value="{{ old('email') }}" required autofocus
@@ -49,21 +41,25 @@
                         placeholder="••••••••">
                 </div>
 
-                <div class="flex items-center justify-between">
-                    <label class="flex items-center space-x-2 cursor-pointer">
-                        <input type="checkbox" name="remember" class="w-4 h-4 rounded border-slate-600 text-blue-500 focus:ring-blue-500 bg-slate-700">
-                        <span class="text-sm text-slate-400">Remember session</span>
+                <div class="flex items-center justify-between text-sm">
+                    <label class="flex items-center text-slate-400 gap-2 cursor-pointer">
+                        <input type="checkbox" name="remember" class="rounded border-slate-700 bg-slate-800 text-blue-500 focus:ring-blue-500">
+                        Remember session
                     </label>
-                    <a href="#" class="text-sm text-blue-400 hover:text-blue-300 transition-colors">Forgot Password?</a>
+                    <a href="#" class="text-blue-500 hover:text-blue-400 font-medium">Forgot Password?</a>
                 </div>
 
-                <button type="submit" 
-                    class="w-full py-3 px-4 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg shadow-lg shadow-blue-500/30 transition-all duration-200">
+                @if ($errors->any())
+                    <div class="text-red-500 text-sm font-medium bg-red-500/10 border border-red-500/20 rounded-lg p-3">
+                        {{ $errors->first() }}
+                    </div>
+                @endif
+
+                <button type="submit" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 px-4 rounded-lg transition-colors shadow-lg shadow-blue-500/30 tracking-wide">
                     Authorize Access
                 </button>
             </form>
         </div>
-
     </div>
 
 </body>

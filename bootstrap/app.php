@@ -14,6 +14,7 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->alias([
             'role' => RoleMiddleware::class,
+            'prevent-back' => \App\Http\Middleware\PreventBackHistory::class, // YENİ KALKANIMIZ
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

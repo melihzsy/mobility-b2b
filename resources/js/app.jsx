@@ -2,19 +2,20 @@ import './bootstrap';
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import ProductList from './components/ProductList';
+// 1. Yeni bileşenimizi içe aktarıyoruz
+// (Dosyayı Pages klasörüne koyduysan yolu './Pages/About' olarak değiştir)
+import About from './components/About'; 
 
-// Sayfadaki React bileşenlerini (component) yakalayıp render edecek dinamik yapı
 const renderReactComponent = (elementId, Component) => {
     const rootElement = document.getElementById(elementId);
     if (rootElement) {
-        // İleride Laravel'den (Blade üzerinden) gelecek verileri (props) yakalamak için dataset kullanıyoruz
         const props = Object.assign({}, rootElement.dataset);
         const root = createRoot(rootElement);
         root.render(<Component {...props} />);
     }
 };
 
-// Not: Filtreleme ve Sepet bileşenlerimizi oluşturdukça buraya ekleyeceğiz.
-
-// ÇAĞIRMA İŞLEMİ BURADA, EN ALTTA OLMALI:
+// ÇAĞIRMA İŞLEMLERİ BURADA:
 renderReactComponent('react-product-list', ProductList);
+// 2. About sayfamız için yeni bir dinleyici ekliyoruz
+renderReactComponent('react-about-page', About);
